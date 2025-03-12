@@ -1,0 +1,19 @@
+﻿<Window x:Class="ExcelToJsonConverter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="ExcelToJsonConverter" Height="450" Width="800"
+        Loaded="Window_Loaded">
+    <Grid>
+        <!-- 显示加载的文件列表 -->
+        <ListBox x:Name="ExcelFileListBox" HorizontalAlignment="Left" Height="200" VerticalAlignment="Top" Width="600"/>
+
+        <!-- 选择输出目录 -->
+        <Button Content="选择输出目录" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Margin="0,220,0,0" Click="SelectOutputDirectory"/>
+
+        <!-- 转换按钮 -->
+        <Button Content="转换为JSON" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Margin="160,220,0,0" Click="ConvertExcelToJson"/>
+
+        <!-- 输出目录的显示框 -->
+        <TextBox x:Name="OutputDirectoryTextBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="400" Margin="0,250,0,0"/>
+    </Grid>
+</Window>
