@@ -6,7 +6,9 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
-	<UseWindowsForms>true</UseWindowsForms>  <!-- 启用 Windows Forms -->
+	<UseWindowsForms>true</UseWindowsForms>
+	<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+	<PublishDir>bin\Release\net8.0-windows\publish\</PublishDir>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using System.Windows;
 using Newtonsoft.Json;
 using OfficeOpenXml;
-using System.Windows.Forms;
-using System.Windows.Controls;
-using System.Collections.ObjectModel;
 
 namespace ExcelToJsonConverter
 {
@@ -170,12 +165,43 @@ namespace ExcelToJsonConverter
         // Double-click ListView item to trigger conversion
         private void ExcelFileListView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            var selectedFile = ExcelFileListView.SelectedItem as ExcelFileInfo;
+            // 通过 sender 获取 ListView 控件
+            var listView = sender as System.Windows.Controls.ListView;
+            if (listView == null) return;
+
+            // 获取当前选中的项，类型为 ExcelFileInfo
+            var selectedFile = listView.SelectedItem as ExcelFileInfo;
             if (selectedFile != null)
             {
-                ConvertExcelToJson(selectedFile.ExcelFileName, selectedFile.JsonFileName);
+                // 清空日志输出窗口
+                LogOutputTextBox.Clear();
+
+                // 检查文件是否存在
+                if (!File.Exists(selectedFile.ExcelFileName))
+                {
+                    LogMessage($"错误: 文件 {selectedFile.ExcelFileName} 不存在", "Red");
+                    return;
+                }
+
+                try
+                {
+                    // 转换文件
+                    ConvertExcelToJson(selectedFile.ExcelFileName, selectedFile.JsonFileName);
+                    // 记录成功日志（绿色文字）
+                    LogMessage($"转换成功: {selectedFile.ExcelFileName} -> {selectedFile.JsonFileName}", "Green");
+                }
+                catch (Exception ex)
+                {
+                    // 记录错误日志（红色文字）
+                    LogMessage($"错误: {selectedFile.ExcelFileName} -> {selectedFile.JsonFileName} - {ex.Message}", "Red");
+                }
+            }
+            else
+            {
+                System.Windows.MessageBox.Show("请选择一个文件进行转换");
             }
         }
+
 
         // Handle conversion when the "转换为JSON" button is clicked (convert all files)
         private void ConvertExcelToJsonButton_Click(object sender, RoutedEventArgs e)
@@ -209,8 +235,8 @@ namespace ExcelToJsonConverter
 
         private void ConvertExcelToJson(string excelFile, string jsonFileName)
         {
-            var outputDirectory = Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "config");
-
+            //var outputDirectory = Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "config");
+            var outputDirectory = OutputDirectory; // 直接获取最新的编辑框值
             if (!Directory.Exists(outputDirectory))
             {
                 Directory.CreateDirectory(outputDirectory);
